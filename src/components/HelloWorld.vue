@@ -1,9 +1,21 @@
 <script setup>
+import {onMounted} from "vue";
+
 defineProps({
   msg: {
     type: String,
     required: true
   }
+})
+
+onMounted(async () => {
+  await cheerpjInit();
+  const cj = await cheerpjRunLibrary("/app/graphql-java-19.2.jar");
+  // noinspection JSUnresolvedReference
+  const SchemaParserClass = await cj.graphql.schema.idl.SchemaParser;
+  const schemaParser = await new SchemaParserClass();
+  await schemaParser.parse("type Query { a: String }");
+  console.log('everything is fine')
 })
 </script>
 
